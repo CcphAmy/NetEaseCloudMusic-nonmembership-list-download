@@ -25,5 +25,5 @@
    
 ![](./images/example.gif)
 
-## 声明
-仅供测试用
+## URL获取
+![](./images/url.png)
