@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-import urllib.request
 import requests
 import threading
 import os
@@ -86,7 +85,7 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 		if len(self.musicData) >1:
 			self.start()
 
-	# event.Skip()
+
 
 	def get(self,values):
 
@@ -98,9 +97,11 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 			x['name'] = re.sub(rstr, "_", x['name'])
 			if not os.path.exists("d:/music/" + x['name'] + '.mp3'):
 				self.output_text.AppendText('***** ' + x['name'] + '.mp3 ***** Downloading...\n')
+				
 				url = 'http://music.163.com/song/media/outer/url?id=' + x['id'] + '.mp3'
 				try: 
-					urllib.request.urlretrieve(url,'d:/music/' + x['name'] + '.mp3')
+					# urllib.request.urlretrieve(url,'d:/music/' + x['name'] + '.mp3')
+					self.saveFile(url,'d:/music/' + x['name'] + '.mp3')
 					downNum = downNum + 1
 				except:
 					x = x - 1
@@ -124,7 +125,11 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 			tempArr.append({'id':music_id,'name':music_name})
 		return tempArr
 
-
+	def saveFile(self,url,path):
+		response = requests.get(url)
+		with open(path, 'wb') as f:
+			f.write(response.content)
+			f.flush()
 
 def main():
 	app = wx.App(False) 
