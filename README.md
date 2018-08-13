@@ -5,7 +5,7 @@
 * 20180807 项目上传
 
 ## 要求（py脚本）
-* python3+requests+python+BeautifulSoup4+lxml
+* python3+requests+wxpython+BeautifulSoup4+lxml
 
 ## 文件结构：
 ```bash
