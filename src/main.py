@@ -11,7 +11,8 @@ from bs4 import BeautifulSoup
 
 
 class MyFrame1 (threading.Thread,wx.Frame):
-	musicData = []
+	musicData  = []
+	user_agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
 	def __init__( self, threadID, name ,counter):
 		wx.Frame.__init__ ( self, None, id = wx.ID_ANY, title = u"网易云音乐歌曲批量下载", pos = wx.DefaultPosition, size = wx.Size( 450,409 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 		
@@ -82,11 +83,10 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 	def main_button_click( self, event ):
 		self.musicData = []
 		self.musicData = self.getMusicData(self.url_text.GetValue().replace("#/",""))
+		print(self.musicData)
 		if len(self.musicData) >1:
 			self.start()
-
-
-
+			
 	def get(self,values):
 
 		print(len(values))
@@ -111,8 +111,7 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 
 	def getMusicData(self,url):
 
-		user_agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
-		headers    = {'User-Agent':user_agent}
+		headers    = {'User-Agent':self.user_agent}
 
 		webData    = requests.get(url,headers=headers).text
 		soup       = BeautifulSoup(webData,'lxml')
@@ -126,7 +125,8 @@ https://music.163.com/#/playlist?id=xxxxxxxxxx\n \
 		return tempArr
 
 	def saveFile(self,url,path):
-		response = requests.get(url)
+		headers = {'User-Agent':self.user_agent,'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8','Upgrade-Insecure-Requests':'1'}
+		response = requests.get(url,headers=headers)
 		with open(path, 'wb') as f:
 			f.write(response.content)
 			f.flush()
